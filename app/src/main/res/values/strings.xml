@@ -33,6 +33,8 @@
     <string name="cd_skip_next">下一首</string>
     <string name="cd_skip_previous">上一首</string>
     <string name="cd_back">返回</string>
+    <string name="cd_play_mode">切换播放模式</string>
+    <string name="open_full_player">全屏</string>
     <string name="notification_channel_playback_name">媒体播放</string>
     <string name="notification_channel_playback_desc">播放控制与后台播放</string>
     <string name="notification_playback_title">宝宝儿歌</string>

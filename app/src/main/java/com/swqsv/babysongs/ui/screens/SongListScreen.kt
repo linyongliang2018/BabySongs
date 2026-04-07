@@ -17,6 +17,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,7 +28,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.swqsv.babysongs.R
 import com.swqsv.babysongs.data.model.Album
 import com.swqsv.babysongs.data.model.Song
 import com.swqsv.babysongs.ui.formatDurationMs
@@ -43,7 +46,8 @@ fun SongListScreen(
     libraryViewModel: LibraryViewModel,
     playerViewModel: PlayerViewModel,
     onBack: () -> Unit,
-    onOpenNowPlaying: () -> Unit,
+    /** 可选：进入「正在播放」全屏（列表仍为默认主界面）。 */
+    onOpenFullPlayer: () -> Unit,
 ) {
     val songs = remember(album.id) { mutableStateListOf<Song>() }
     var loading by remember(album.id) { mutableStateOf(true) }
@@ -86,6 +90,11 @@ fun SongListScreen(
                         Text(text = "‹", style = MaterialTheme.typography.headlineMedium)
                     }
                 },
+                actions = {
+                    TextButton(onClick = onOpenFullPlayer) {
+                        Text(text = stringResource(id = R.string.open_full_player))
+                    }
+                },
             )
         },
     ) { padding ->
@@ -115,7 +124,6 @@ fun SongListScreen(
                             onClick = {
                                 val mode = playerViewModel.playbackState.value.playMode
                                 playerViewModel.playAlbumFromSong(album, songs.toList(), song, mode)
-                                onOpenNowPlaying()
                             },
                         )
                     }

@@ -26,6 +26,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.swqsv.babysongs.ui.components.MiniPlayerBar
+import com.swqsv.babysongs.ui.cyclePlayMode
 import com.swqsv.babysongs.ui.navigation.AlbumNavKey
 import com.swqsv.babysongs.ui.screens.AlbumListScreen
 import com.swqsv.babysongs.ui.screens.NowPlayingScreen
@@ -71,15 +72,14 @@ class MainActivity : ComponentActivity() {
                         if (showMiniPlayer) {
                             MiniPlayerBar(
                                 state = playbackState,
-                                onOpenFull = {
-                                    navController.navigate("nowPlaying") {
-                                        launchSingleTop = true
-                                    }
-                                },
                                 onPlayPause = { playerViewModel.playPause() },
                                 onSkipNext = { playerViewModel.skipToNext() },
                                 onSkipPrevious = { playerViewModel.skipToPrevious() },
                                 onSeekToMs = { ms -> playerViewModel.seekTo(ms) },
+                                onCyclePlayMode = {
+                                    val next = cyclePlayMode(playbackState.playMode)
+                                    playerViewModel.setPlayMode(next)
+                                },
                             )
                         }
                     },
@@ -126,7 +126,7 @@ class MainActivity : ComponentActivity() {
                             libraryViewModel = libraryViewModel,
                             playerViewModel = playerViewModel,
                             onBack = { navController.popBackStack() },
-                            onOpenNowPlaying = {
+                            onOpenFullPlayer = {
                                 navController.navigate("nowPlaying") {
                                     launchSingleTop = true
                                 }

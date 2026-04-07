@@ -35,8 +35,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.swqsv.babysongs.R
-import com.swqsv.babysongs.data.model.PlayMode
+import com.swqsv.babysongs.ui.cyclePlayMode
 import com.swqsv.babysongs.ui.formatDurationMs
+import com.swqsv.babysongs.ui.playModeLabel
 import com.swqsv.babysongs.ui.viewmodel.PlayerViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -114,7 +115,7 @@ fun NowPlayingScreen(
 
             Button(
                 onClick = {
-                    val next = cycleMode(state.playMode)
+                    val next = cyclePlayMode(state.playMode)
                     playerViewModel.setPlayMode(next)
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -164,24 +165,4 @@ fun NowPlayingScreen(
             }
         }
     }
-}
-
-private fun cycleMode(current: PlayMode): PlayMode {
-    return when (current) {
-        PlayMode.ORDER -> PlayMode.LIST_LOOP
-        PlayMode.LIST_LOOP -> PlayMode.SINGLE_LOOP
-        PlayMode.SINGLE_LOOP -> PlayMode.SHUFFLE
-        PlayMode.SHUFFLE -> PlayMode.ORDER
-    }
-}
-
-@Composable
-private fun playModeLabel(mode: PlayMode): String {
-    val id = when (mode) {
-        PlayMode.ORDER -> R.string.mode_order
-        PlayMode.LIST_LOOP -> R.string.mode_list_loop
-        PlayMode.SINGLE_LOOP -> R.string.mode_single_loop
-        PlayMode.SHUFFLE -> R.string.mode_shuffle
-    }
-    return stringResource(id = id)
 }

@@ -2,6 +2,14 @@
 
 本文件记录 **宝宝儿歌** 各版本相对上一版的用户可见变更。版本号与 `app/build.gradle.kts` 中 `versionName`、git tag `v*` 一致。
 
+## [1.0.1] - 2026-04-07
+
+### 变更
+
+- **歌单为主**：点击歌曲仅开始播放，**不再自动进入**「正在播放」全屏；全屏入口改为歌单顶栏 **「全屏」**。
+- **迷你播放器**：进度条下显示 **当前时间 / 总时长**（未知时长显示 `--:--`）；增加 **播放模式** 切换（顺序 / 列表循环 / 单曲循环 / 随机），与全屏页逻辑一致；标题区不再误触进入全屏。
+- 抽取共享逻辑 [`PlayModeUi.kt`](app/src/main/java/com/swqsv/babysongs/ui/PlayModeUi.kt)（`cyclePlayMode`、`playModeLabel`），供迷你栏与全屏页共用。
+
 ## [1.0.0] - 2026-04-07
 
 ### 新增
@@ -17,4 +25,5 @@
 - 本仓库 **无 `INTERNET` 权限**，不联网传输媒体。
 - 更细的联调步骤见 [RUNBOOK.md](./RUNBOOK.md)。
 
+[1.0.1]: https://github.com/linyongliang2018/BabySongs/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/linyongliang2018/BabySongs/releases/tag/v1.0.0
