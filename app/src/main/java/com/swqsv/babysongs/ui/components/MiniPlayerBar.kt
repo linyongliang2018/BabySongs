@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
@@ -65,8 +66,9 @@ fun MiniPlayerBar(
     val playModeToggleDesc = stringResource(id = R.string.cd_play_mode)
 
     Surface(
-        tonalElevation = 3.dp,
-        shadowElevation = 6.dp,
+        shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+        tonalElevation = 2.dp,
+        shadowElevation = 4.dp,
         color = MaterialTheme.colorScheme.surfaceContainerHigh,
     ) {
         Column {
@@ -139,8 +141,9 @@ fun MiniPlayerBar(
                         .height(40.dp)
                         .padding(end = 4.dp)
                         .semantics { contentDescription = playModeToggleDesc },
+                    shape = RoundedCornerShape(20.dp),
                     contentPadding = PaddingValues(
-                        horizontal = 8.dp,
+                        horizontal = 10.dp,
                         vertical = 4.dp,
                     ),
                 ) {
@@ -162,16 +165,16 @@ fun MiniPlayerBar(
                 }
                 FilledIconButton(
                     onClick = onPlayPause,
-                    modifier = Modifier.size(48.dp),
+                    modifier = Modifier.size(52.dp),
                     colors = IconButtonDefaults.filledIconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary,
                     ),
                 ) {
                     Icon(
                         imageVector = if (state.isPlaying) Icons.Filled.Pause else Icons.Filled.PlayArrow,
                         contentDescription = stringResource(id = R.string.cd_play_pause),
-                        modifier = Modifier.size(28.dp),
+                        modifier = Modifier.size(30.dp),
                     )
                 }
                 IconButton(

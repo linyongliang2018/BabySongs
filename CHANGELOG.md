@@ -2,6 +2,15 @@
 
 本文件记录 **宝宝儿歌** 各版本相对上一版的用户可见变更。版本号与 `app/build.gradle.kts` 中 `versionName`、git tag `v*` 一致。
 
+## [1.0.2] - 2026-04-07
+
+### 变更
+
+- **界面与主题**：单一柔和青绿主色、灰白层次与 **12～24dp** 圆角；专辑卡片、歌曲列表、正在播放与 **迷你播放条** 样式统一，顶栏使用系统图标（菜单/返回）。
+- **歌曲列表**：**当前播放曲目** 以浅主色底与描边高亮（同专辑且与播放状态一致）。
+- **系统栏可读性**：浅色主题下 **状态栏 / 导航栏** 使用深色系统图标（`windowLight*` 与运行时 `WindowInsetsController` 同步）；**页面背景** 与卡片表面拉开层次，**导航栏底色** 与内容区对齐，避免底部按键与背景融在一起。
+- **正在播放**：居中布局、更大主播放键与胶囊形播放模式切换；进度条与主题主色一致。
+
 ## [1.0.1] - 2026-04-07
 
 ### 变更
@@ -25,5 +34,6 @@
 - 本仓库 **无 `INTERNET` 权限**，不联网传输媒体。
 - 更细的联调步骤见 [RUNBOOK.md](./RUNBOOK.md)。
 
+[1.0.2]: https://github.com/linyongliang2018/BabySongs/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/linyongliang2018/BabySongs/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/linyongliang2018/BabySongs/releases/tag/v1.0.0

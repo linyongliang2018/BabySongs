@@ -1,6 +1,6 @@
 package com.swqsv.babysongs.ui.screens
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,16 +9,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.swqsv.babysongs.R
 import com.swqsv.babysongs.data.model.Album
 import com.swqsv.babysongs.data.model.Song
@@ -51,6 +56,8 @@ fun SongListScreen(
 ) {
     val songs = remember(album.id) { mutableStateListOf<Song>() }
     var loading by remember(album.id) { mutableStateOf(true) }
+
+    val playbackState by playerViewModel.playbackState.collectAsStateWithLifecycle()
 
     LaunchedEffect(album.id) {
         loading = true
@@ -82,12 +89,19 @@ fun SongListScreen(
     }
 
     Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
                 title = { Text(text = album.name) },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                ),
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Text(text = "‹", style = MaterialTheme.typography.headlineMedium)
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(id = R.string.cd_back),
+                        )
                     }
                 },
                 actions = {
@@ -107,7 +121,7 @@ fun SongListScreen(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    CircularProgressIndicator()
+                    CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                 }
             }
             else -> {
@@ -119,8 +133,12 @@ fun SongListScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     items(songs, key = { it.id }) { song ->
+                        val isCurrent =
+                            playbackState.currentSong?.id == song.id &&
+                                playbackState.currentAlbum?.id == album.id
                         SongRow(
                             song = song,
+                            isCurrent = isCurrent,
                             onClick = {
                                 val mode = playerViewModel.playbackState.value.playMode
                                 playerViewModel.playAlbumFromSong(album, songs.toList(), song, mode)
@@ -136,25 +154,48 @@ fun SongListScreen(
 @Composable
 private fun SongRow(
     song: Song,
+    isCurrent: Boolean,
     onClick: () -> Unit,
 ) {
+    val border = if (isCurrent) {
+        BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.45f))
+    } else {
+        BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+    }
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
+        shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(
+            containerColor = if (isCurrent) {
+                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.42f)
+            } else {
+                MaterialTheme.colorScheme.surface
+            },
+        ),
+        border = border,
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp)) {
             Text(
                 text = song.title,
                 style = MaterialTheme.typography.titleMedium,
+                color = if (isCurrent) {
+                    MaterialTheme.colorScheme.onPrimaryContainer
+                } else {
+                    MaterialTheme.colorScheme.onSurface
+                },
             )
             val dur = song.durationMs
             if (dur > 0L) {
                 Text(
                     text = formatDurationMs(dur),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = if (isCurrent) {
+                        MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.85f)
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    },
                 )
             }
         }
