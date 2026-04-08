@@ -17,6 +17,7 @@ import com.swqsv.babysongs.data.model.Album
 import com.swqsv.babysongs.data.model.PlayMode
 import com.swqsv.babysongs.data.model.Song
 import com.swqsv.babysongs.data.prefs.PlaybackPreferences
+import com.swqsv.babysongs.ui.widget.WidgetUpdater
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -46,6 +47,7 @@ class PlaybackController(
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private var positionTicker: Job? = null
+    private var lastWidgetSignature: String? = null
 
     private var orderedSongs: List<Song> = emptyList()
     private var currentAlbum: Album? = null
@@ -84,6 +86,7 @@ class PlaybackController(
 
         override fun onIsPlayingChanged(isPlaying: Boolean) {
             _state.update { it.copy(isPlaying = isPlaying) }
+            updateWidgetIfNeeded()
             if (isPlaying) {
                 startPositionTicker()
             } else {
@@ -391,6 +394,7 @@ class PlaybackController(
                 durationMs = song?.durationMs ?: it.durationMs,
             )
         }
+        updateWidgetIfNeeded()
     }
 
     private fun loadCurrentSongFromLogicalState(shouldPlay: Boolean, resumePositionMs: Long? = null) {
@@ -439,6 +443,22 @@ class PlaybackController(
     private fun stopPositionTicker() {
         positionTicker?.cancel()
         positionTicker = null
+    }
+
+    private fun updateWidgetIfNeeded(force: Boolean = false) {
+        val state = _state.value
+        val signature = buildString {
+            append(state.currentAlbum?.id ?: "")
+            append('|')
+            append(state.currentSong?.id ?: "")
+            append('|')
+            append(state.isPlaying)
+            append('|')
+            append(state.playMode.name)
+        }
+        if (!force && signature == lastWidgetSignature) return
+        lastWidgetSignature = signature
+        WidgetUpdater.updateAll(application, state)
     }
 
     private fun ensureForegroundService(context: Context) {

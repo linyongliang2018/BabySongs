@@ -2,6 +2,18 @@
 
 本文件记录 **宝宝儿歌** 各版本相对上一版的用户可见变更。版本号与 `app/build.gradle.kts` 中 `versionName`、git tag `v*` 一致。
 
+## [1.0.3] - 2026-04-08
+
+### 新增
+
+- **桌面小组件**：迷你播放控制（显示当前曲目与专辑名、上一首 / 播放暂停 / 下一首）；点击标题区域进入应用。
+- **小组件样式**：薄荷绿系卡片风格；自定义矢量图标，避免系统默认图标发糊；`AppWidgetProvider` 注册与 `BroadcastReceiver` 转发播放控制，复用现有 `PlaybackController`。
+
+### 变更
+
+- **多档尺寸**：提供 **小 / 中 / 大** 三套 `RemoteViews` 布局；根据桌面给出的 `AppWidgetOptions` 自动切换；拖拽调整尺寸时通过 `onAppWidgetOptionsChanged` 刷新。
+- **播放状态联动**：在 `PlaybackController` 状态变化时刷新小组件（与现有 UI 状态流一致）。
+
 ## [1.0.2] - 2026-04-07
 
 ### 变更
@@ -34,6 +46,7 @@
 - 本仓库 **无 `INTERNET` 权限**，不联网传输媒体。
 - 更细的联调步骤见 [RUNBOOK.md](./RUNBOOK.md)。
 
+[1.0.3]: https://github.com/linyongliang2018/BabySongs/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/linyongliang2018/BabySongs/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/linyongliang2018/BabySongs/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/linyongliang2018/BabySongs/releases/tag/v1.0.0

@@ -39,4 +39,7 @@
     <string name="notification_channel_playback_desc">播放控制与后台播放</string>
     <string name="notification_playback_title">宝宝儿歌</string>
     <string name="notification_playback_text">正在播放</string>
+    <string name="widget_description">桌面迷你播放控制</string>
+    <string name="widget_idle_title">未在播放</string>
+    <string name="widget_idle_subtitle">点击下方按钮开始控制</string>
 </resources>
