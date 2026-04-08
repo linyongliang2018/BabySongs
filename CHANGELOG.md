@@ -2,6 +2,19 @@
 
 本文件记录 **宝宝儿歌** 各版本相对上一版的用户可见变更。版本号与 `app/build.gradle.kts` 中 `versionName`、git tag `v*` 一致。
 
+## [1.0.4] - 2026-04-08
+
+### 新增
+
+- **专辑分类**：自定义分类（增删改）；专辑可归入某一分类或「未分类」；DataStore 持久化，不改变原有文档树扫描与播放逻辑。
+- **首页两阶段**：进入后先选 **分类宫格**（正方形两列），点选后再进入该分类下的专辑列表；顶栏 **返回** 回到分类入口。
+- **薄荷玻璃 UI 组件**（`MintGlass`）：横向分割渐变、高光与薄荷色散阴影；分类格与专辑/歌曲行风格统一。
+
+### 变更
+
+- **浅色主题**：背景与表面更偏统一薄荷绿层次，减少「白 + 冷灰」割裂。
+- **歌曲列表**：当前播放行使用 **Playing** 强调样式（更厚描边、更强渐变与阴影）；左侧 **主色竖条**、标题旁 **「播放中」** 标签；高亮判断兼容 **专辑 `folderPath` / 歌曲 `filePath`**，避免不亮的问题。
+
 ## [1.0.3] - 2026-04-08
 
 ### 新增
@@ -46,6 +59,7 @@
 - 本仓库 **无 `INTERNET` 权限**，不联网传输媒体。
 - 更细的联调步骤见 [RUNBOOK.md](./RUNBOOK.md)。
 
+[1.0.4]: https://github.com/linyongliang2018/BabySongs/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/linyongliang2018/BabySongs/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/linyongliang2018/BabySongs/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/linyongliang2018/BabySongs/compare/v1.0.0...v1.0.1

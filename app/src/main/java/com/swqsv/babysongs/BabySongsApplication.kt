@@ -2,6 +2,7 @@ package com.swqsv.babysongs
 
 import android.app.Application
 import com.swqsv.babysongs.data.cache.SongIndexCache
+import com.swqsv.babysongs.data.prefs.AlbumCategoryPreferences
 import com.swqsv.babysongs.data.prefs.LibraryRootPreferences
 import com.swqsv.babysongs.data.prefs.PlaybackPreferences
 import com.swqsv.babysongs.playback.PlaybackController
@@ -14,6 +15,9 @@ class BabySongsApplication : Application() {
     lateinit var libraryRootPreferences: LibraryRootPreferences
         private set
 
+    lateinit var albumCategoryPreferences: AlbumCategoryPreferences
+        private set
+
     lateinit var songIndexCache: SongIndexCache
         private set
 
@@ -24,6 +28,7 @@ class BabySongsApplication : Application() {
         super.onCreate()
         playbackPreferences = PlaybackPreferences(this)
         libraryRootPreferences = LibraryRootPreferences(this)
+        albumCategoryPreferences = AlbumCategoryPreferences(this)
         songIndexCache = SongIndexCache(this)
         playbackController = PlaybackController(this, playbackPreferences)
     }

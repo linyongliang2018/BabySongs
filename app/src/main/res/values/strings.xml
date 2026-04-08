@@ -2,6 +2,7 @@
     <string name="app_name">宝宝儿歌</string>
     <string name="albums_title">专辑</string>
     <string name="songs_title">歌曲</string>
+    <string name="song_now_playing_badge">播放中</string>
     <string name="now_playing_title">正在播放</string>
     <string name="song_count_format">%1$d 首</string>
     <string name="permission_rationale">需要读取媒体与（部分系统）通知权限，以便扫描本地音频并显示播放控制。</string>
@@ -42,4 +43,25 @@
     <string name="widget_description">桌面迷你播放控制</string>
     <string name="widget_idle_title">未在播放</string>
     <string name="widget_idle_subtitle">点击下方按钮开始控制</string>
+    <string name="category_tab_all">全部</string>
+    <string name="category_tab_uncategorized">未分类</string>
+    <string name="category_manage">管理分类</string>
+    <string name="category_manage_title">管理分类</string>
+    <string name="category_add">新增分类</string>
+    <string name="category_rename">重命名</string>
+    <string name="category_delete">删除</string>
+    <string name="category_delete_confirm_message">删除「%1$s」？该分类下的专辑将变为未分类。</string>
+    <string name="category_name_hint">分类名称</string>
+    <string name="category_set_for_album">设置分类</string>
+    <string name="category_uncategorized_option">未分类</string>
+    <string name="category_badge_uncategorized">未分类</string>
+    <string name="category_album_line_format">分类：%1$s</string>
+    <string name="category_manage_empty_hint">暂无自定义分类。点击下方「新增分类」即可添加。</string>
+    <string name="category_manage_done">完成</string>
+    <string name="category_album_count_format">%1$d 个专辑</string>
+    <string name="category_home_title">分类</string>
+    <string name="category_back_to_picker">返回分类</string>
+    <string name="category_empty_in_filter">该分类下暂无专辑</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
 </resources>

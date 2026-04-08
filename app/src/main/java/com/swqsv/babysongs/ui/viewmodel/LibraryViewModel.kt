@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.swqsv.babysongs.BabySongsApplication
 import com.swqsv.babysongs.data.model.Album
+import com.swqsv.babysongs.data.model.AlbumCategoryUi
 import com.swqsv.babysongs.data.model.Song
 import com.swqsv.babysongs.data.prefs.PlaybackSnapshot
 import com.swqsv.babysongs.data.scan.MediaLibraryScanner
@@ -17,6 +18,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,13 +28,42 @@ data class LibraryRootInfo(
     val treeUriString: String,
 )
 
+sealed class LibraryCategoryTab {
+    data object All : LibraryCategoryTab()
+    data object Uncategorized : LibraryCategoryTab()
+    data class Custom(val id: String) : LibraryCategoryTab()
+}
+
+enum class AlbumsHomePhase {
+    /** 仅展示分类入口（正方形宫格） */
+    PickingCategory,
+    /** 已选分类，展示对应专辑列表 */
+    ViewingAlbums,
+}
+
 data class LibraryUiState(
     val albums: List<Album> = emptyList(),
     val isLoading: Boolean = false,
     val message: String? = null,
     /** 已添加文档根（顺序与添加顺序一致），用于展示与移除 */
     val libraryRoots: List<LibraryRootInfo> = emptyList(),
+    val categories: List<AlbumCategoryUi> = emptyList(),
+    /** 仅含已归入某分类的专辑；未出现的专辑 id 视为未分类。 */
+    val albumToCategoryId: Map<String, String> = emptyMap(),
+    val selectedCategoryTab: LibraryCategoryTab = LibraryCategoryTab.All,
+    val homePhase: AlbumsHomePhase = AlbumsHomePhase.PickingCategory,
+    /**
+     * 为 false 时分类宫格不显示选中描边（避免首次进入即出现「全部」被选中）。
+     * 用户进入过专辑列表后为 true，返回分类入口时按 [selectedCategoryTab] 高亮。
+     */
+    val showGridSelectionHighlight: Boolean = false,
 )
+
+fun LibraryUiState.filteredAlbums(): List<Album> = when (val t = selectedCategoryTab) {
+    LibraryCategoryTab.All -> albums
+    LibraryCategoryTab.Uncategorized -> albums.filter { albumToCategoryId[it.id] == null }
+    is LibraryCategoryTab.Custom -> albums.filter { albumToCategoryId[it.id] == t.id }
+}
 
 class LibraryViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -48,6 +79,68 @@ class LibraryViewModel(application: Application) : AndroidViewModel(application)
 
     private val _uiState = MutableStateFlow(LibraryUiState())
     val uiState: StateFlow<LibraryUiState> = _uiState.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            combine(
+                app.albumCategoryPreferences.categoriesFlow,
+                app.albumCategoryPreferences.albumToCategoryIdFlow,
+            ) { cats, map -> cats to map }
+                .collect { (cats, map) ->
+                    val prev = _uiState.value
+                    var tab = prev.selectedCategoryTab
+                    if (tab is LibraryCategoryTab.Custom && cats.none { it.id == tab.id }) {
+                        tab = LibraryCategoryTab.All
+                    }
+                    _uiState.value = prev.copy(
+                        categories = cats,
+                        albumToCategoryId = map,
+                        selectedCategoryTab = tab,
+                    )
+                }
+        }
+    }
+
+    /** 在分类入口点击某一分类后进入专辑列表（不改变筛选逻辑，仅切换首页阶段）。 */
+    fun openAlbumListForCategory(tab: LibraryCategoryTab) {
+        _uiState.value = _uiState.value.copy(
+            selectedCategoryTab = tab,
+            homePhase = AlbumsHomePhase.ViewingAlbums,
+            showGridSelectionHighlight = true,
+        )
+    }
+
+    /** 从专辑列表返回分类入口。 */
+    fun backToCategoryPicker() {
+        _uiState.value = _uiState.value.copy(homePhase = AlbumsHomePhase.PickingCategory)
+    }
+
+    fun addCategory(name: String) {
+        viewModelScope.launch {
+            app.albumCategoryPreferences.addCategory(name)
+        }
+    }
+
+    fun renameCategory(id: String, newName: String) {
+        viewModelScope.launch {
+            app.albumCategoryPreferences.renameCategory(id, newName)
+        }
+    }
+
+    fun deleteCategory(id: String) {
+        viewModelScope.launch {
+            if (_uiState.value.selectedCategoryTab == LibraryCategoryTab.Custom(id)) {
+                _uiState.value = _uiState.value.copy(selectedCategoryTab = LibraryCategoryTab.All)
+            }
+            app.albumCategoryPreferences.deleteCategory(id)
+        }
+    }
+
+    fun setAlbumCategory(albumId: String, categoryId: String?) {
+        viewModelScope.launch {
+            app.albumCategoryPreferences.setAlbumCategory(albumId, categoryId)
+        }
+    }
 
     /**
      * 用户通过系统文件夹选择器选定目录后调用；追加 URI 并重新扫描。
@@ -79,7 +172,7 @@ class LibraryViewModel(application: Application) : AndroidViewModel(application)
                 app.libraryRootPreferences.migrateLegacyIfNeeded()
                 val uriStrings = app.libraryRootPreferences.rootTreeUriStrings.first()
                 if (uriStrings.isEmpty()) {
-                    _uiState.value = LibraryUiState(
+                    _uiState.value = _uiState.value.copy(
                         albums = emptyList(),
                         isLoading = false,
                         message = null,
@@ -111,7 +204,7 @@ class LibraryViewModel(application: Application) : AndroidViewModel(application)
                     }
                     roots to albums
                 }
-                _uiState.value = LibraryUiState(
+                _uiState.value = _uiState.value.copy(
                     albums = fastAlbums,
                     isLoading = false,
                     message = null,
@@ -130,7 +223,7 @@ class LibraryViewModel(application: Application) : AndroidViewModel(application)
                     }
                 }
             } catch (e: Exception) {
-                _uiState.value = LibraryUiState(
+                _uiState.value = _uiState.value.copy(
                     albums = emptyList(),
                     isLoading = false,
                     message = e.message ?: "扫描失败",

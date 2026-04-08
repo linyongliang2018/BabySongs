@@ -17,11 +17,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-/** 柔和青绿主色，其余为灰白层次，不引入第二色相。 */
+/** 柔和薄荷青绿主色；背景与容器带统一冷绿倾向，避免「白 + 冷灰」割裂。 */
 private val LightColors = lightColorScheme(
-    primary = Color(0xFF3F7568),
+    primary = Color(0xFF3A6F62),
     onPrimary = Color(0xFFFFFFFF),
-    primaryContainer = Color(0xFFC9E5DC),
+    primaryContainer = Color(0xFFD4EDE6),
     onPrimaryContainer = Color(0xFF06231C),
     secondary = Color(0xFF5C6462),
     onSecondary = Color(0xFFFFFFFF),
@@ -35,20 +35,20 @@ private val LightColors = lightColorScheme(
     onError = Color(0xFFFFFFFF),
     errorContainer = Color(0xFFFFDAD6),
     onErrorContainer = Color(0xFF410002),
-    background = Color(0xFFE6E9E8),
+    background = Color(0xFFE8F1EE),
     onBackground = Color(0xFF1A1C1C),
-    surface = Color(0xFFF8FAF9),
+    surface = Color(0xFFF7FBFA),
     onSurface = Color(0xFF1A1C1C),
-    surfaceVariant = Color(0xFFD9DEDB),
-    onSurfaceVariant = Color(0xFF3A4542),
-    outline = Color(0xFF6F7976),
-    outlineVariant = Color(0xFFA8B2AE),
+    surfaceVariant = Color(0xFFCFE3DD),
+    onSurfaceVariant = Color(0xFF2D3E3A),
+    outline = Color(0xFF6F8A82),
+    outlineVariant = Color(0xFFB4C9C2),
     scrim = Color(0xFF000000),
     surfaceContainerLowest = Color(0xFFFDFEFE),
-    surfaceContainerLow = Color(0xFFF0F3F1),
-    surfaceContainer = Color(0xFFE8EDEA),
-    surfaceContainerHigh = Color(0xFFD4E3DD),
-    surfaceContainerHighest = Color(0xFFC5D6CF),
+    surfaceContainerLow = Color(0xFFEEF6F4),
+    surfaceContainer = Color(0xFFE2ECE9),
+    surfaceContainerHigh = Color(0xFFD4E5E0),
+    surfaceContainerHighest = Color(0xFFC2D8D1),
 )
 
 private val DarkColors = darkColorScheme(
