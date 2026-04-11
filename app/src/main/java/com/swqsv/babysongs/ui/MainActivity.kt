@@ -1,7 +1,9 @@
 package com.swqsv.babysongs.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.viewModels
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -39,13 +41,19 @@ import com.swqsv.babysongs.ui.viewmodel.PlayerViewModel
 
 class MainActivity : ComponentActivity() {
 
+    private val mainViewModel: MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (savedInstanceState == null) {
+            mainViewModel.applyShortcutIntent(intent)
+        }
         setContent {
             BabySongsTheme {
                 val navController = rememberNavController()
                 val libraryViewModel: LibraryViewModel = viewModel()
                 val playerViewModel: PlayerViewModel = viewModel()
+                val pendingShortcut by mainViewModel.pendingShortcut.collectAsStateWithLifecycle()
 
                 val permissions = storagePermissionList()
                 var granted by remember { mutableStateOf(false) }
@@ -106,6 +114,8 @@ class MainActivity : ComponentActivity() {
                                 val segment = AlbumNavKey.encode(album.id)
                                 navController.navigate("songs/$segment")
                             },
+                            pendingShortcut = pendingShortcut,
+                            onShortcutConsumed = { mainViewModel.consumePendingShortcut() },
                         )
                     }
                     composable(
@@ -145,5 +155,11 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        mainViewModel.applyShortcutIntent(intent)
     }
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="add_category"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_category"
+        android:shortcutShortLabel="@string/shortcut_add_category"
+        android:shortcutLongLabel="@string/shortcut_add_category_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.swqsv.babysongs"
+            android:targetClass="com.swqsv.babysongs.ui.MainActivity">
+            <extra
+                android:name="com.swqsv.babysongs.extra.SHORTCUT_ACTION"
+                android:value="add_category" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="add_library_folder"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_folder"
+        android:shortcutShortLabel="@string/shortcut_add_album"
+        android:shortcutLongLabel="@string/shortcut_add_album_long">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.swqsv.babysongs"
+            android:targetClass="com.swqsv.babysongs.ui.MainActivity">
+            <extra
+                android:name="com.swqsv.babysongs.extra.SHORTCUT_ACTION"
+                android:value="add_library_folder" />
+        </intent>
+    </shortcut>
+</shortcuts>

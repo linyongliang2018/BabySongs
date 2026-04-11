@@ -64,4 +64,8 @@
     <string name="category_empty_in_filter">该分类下暂无专辑</string>
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
+    <string name="shortcut_add_category">添加分类</string>
+    <string name="shortcut_add_category_long">管理分类</string>
+    <string name="shortcut_add_album">添加专辑</string>
+    <string name="shortcut_add_album_long">添加儿歌目录</string>
 </resources>

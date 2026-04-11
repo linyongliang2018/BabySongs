@@ -77,6 +77,7 @@ import com.swqsv.babysongs.ui.viewmodel.LibraryCategoryTab
 import com.swqsv.babysongs.ui.components.MintGlassCategoryTile
 import com.swqsv.babysongs.ui.components.MintGlassEmphasis
 import com.swqsv.babysongs.ui.components.MintGlassSplitCard
+import com.swqsv.babysongs.ui.AppShortcutAction
 import com.swqsv.babysongs.ui.viewmodel.LibraryViewModel
 import com.swqsv.babysongs.ui.viewmodel.LibraryUiState
 import com.swqsv.babysongs.ui.viewmodel.filteredAlbums
@@ -88,6 +89,8 @@ fun AlbumListScreen(
     viewModel: LibraryViewModel,
     permissionsGranted: Boolean,
     onOpenAlbum: (Album) -> Unit,
+    pendingShortcut: AppShortcutAction?,
+    onShortcutConsumed: () -> Unit,
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     var showHelpDialog by remember { mutableStateOf(false) }
@@ -116,6 +119,20 @@ fun AlbumListScreen(
     }
 
     val launchPickFolder = { treeLauncher.launch(null) }
+
+    LaunchedEffect(pendingShortcut) {
+        when (pendingShortcut) {
+            AppShortcutAction.AddCategory -> {
+                showManageCategoriesDialog = true
+                onShortcutConsumed()
+            }
+            AppShortcutAction.AddLibraryFolder -> {
+                launchPickFolder()
+                onShortcutConsumed()
+            }
+            null -> Unit
+        }
+    }
 
     LaunchedEffect(permissionsGranted) {
         if (permissionsGranted) {

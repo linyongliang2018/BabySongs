@@ -2,6 +2,12 @@
 
 本文件记录 **宝宝儿歌** 各版本相对上一版的用户可见变更。版本号与 `app/build.gradle.kts` 中 `versionName`、git tag `v*` 一致。
 
+## [1.0.5] - 2026-04-11
+
+### 新增
+
+- **桌面应用快捷方式**：长按启动器图标可进入 **添加分类**（打开管理分类对话框）或 **添加专辑**（打开系统文档树以添加儿歌目录）；`MainActivity` 为 `singleTop` 并解析 Intent，`AlbumListScreen` 内消费待处理动作。
+
 ## [1.0.4] - 2026-04-08
 
 ### 新增
@@ -59,6 +65,7 @@
 - 本仓库 **无 `INTERNET` 权限**，不联网传输媒体。
 - 更细的联调步骤见 [RUNBOOK.md](./RUNBOOK.md)。
 
+[1.0.5]: https://github.com/linyongliang2018/BabySongs/compare/v1.0.4...v1.0.5
 [1.0.4]: https://github.com/linyongliang2018/BabySongs/compare/v1.0.3...v1.0.4
 [1.0.3]: https://github.com/linyongliang2018/BabySongs/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/linyongliang2018/BabySongs/compare/v1.0.1...v1.0.2
