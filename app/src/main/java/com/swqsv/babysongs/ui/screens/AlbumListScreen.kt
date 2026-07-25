@@ -883,7 +883,9 @@ private fun SetAlbumCategoryDialog(
 }
 
 fun storagePermissionList(): Array<String> {
-    return if (Build.VERSION.SDK_INT >= 33) {
+    // Android 13+：分区媒体权限 + 通知运行时权限
+    // Android 10–12：沿用 READ_EXTERNAL_STORAGE（声明里已 maxSdkVersion=32）
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         arrayOf(
             Manifest.permission.READ_MEDIA_AUDIO,
             Manifest.permission.READ_MEDIA_VIDEO,

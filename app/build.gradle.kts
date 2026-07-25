@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.swqsv.babysongs"
-        minSdk = 31
+        minSdk = 29
         targetSdk = 36
         versionCode = 6
         versionName = "1.0.5"

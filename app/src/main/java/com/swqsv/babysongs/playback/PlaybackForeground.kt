@@ -73,6 +73,7 @@ object PlaybackForeground {
 
         val fgType = ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
         try {
+            // ServiceCompat 会按系统版本选择带 type / 不带 type 的 startForeground
             ServiceCompat.startForeground(service, NOTIFICATION_ID, notification, fgType)
             Log.i(TAG, "startForeground ok notificationId=$NOTIFICATION_ID fgType=mediaPlayback")
         } catch (e: SecurityException) {
