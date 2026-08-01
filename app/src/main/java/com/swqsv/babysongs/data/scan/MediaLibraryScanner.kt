@@ -16,7 +16,7 @@ private const val FLAT_PREFIX = "flat:"
 
 /**
  * 在 IO 线程扫描用户授权的文档树根 [Uri]（通常为 [Intent.ACTION_OPEN_DOCUMENT_TREE] 结果）。
- * 每个授权根目录对应**一张**专辑；该目录下**递归**包含的 mp3/mp4 均归入此专辑。
+ * 每个授权根目录对应**一张**专辑；该目录下**递归**包含的常见音视频均归入此专辑（视频仅作音频源）。
  */
 class MediaLibraryScanner {
 
@@ -119,16 +119,14 @@ class MediaLibraryScanner {
 
     private fun isSupportedAudio(fileName: String): Boolean {
         val lower = fileName.lowercase(Locale.getDefault())
-        return lower.endsWith(".mp3") || lower.endsWith(".mp4")
+        val ext = lower.substringAfterLast('.', missingDelimiterValue = "")
+        return ext in SUPPORTED_EXTENSIONS
     }
 
     private fun guessMimeType(fileName: String): String {
         val lower = fileName.lowercase(Locale.getDefault())
-        return when {
-            lower.endsWith(".mp3") -> "audio/mpeg"
-            lower.endsWith(".mp4") -> "video/mp4"
-            else -> "application/octet-stream"
-        }
+        val ext = lower.substringAfterLast('.', missingDelimiterValue = "")
+        return MIME_BY_EXTENSION[ext] ?: "application/octet-stream"
     }
 
     private fun readDurationMsSafe(context: Context, uri: Uri): Long {
@@ -150,6 +148,29 @@ class MediaLibraryScanner {
 
     companion object {
         private const val YIELD_EVERY_N_FILES = 48
+
+        /** ExoPlayer 默认可解的常见音频与视频容器（视频仅播放音频轨）。不含 WMA。 */
+        private val SUPPORTED_EXTENSIONS = setOf(
+            "mp3", "m4a", "aac", "flac", "ogg", "opus", "wav", "oga",
+            "mp4", "m4v", "3gp", "mkv", "webm", "mov",
+        )
+
+        private val MIME_BY_EXTENSION = mapOf(
+            "mp3" to "audio/mpeg",
+            "m4a" to "audio/mp4",
+            "aac" to "audio/aac",
+            "flac" to "audio/flac",
+            "ogg" to "audio/ogg",
+            "opus" to "audio/ogg",
+            "wav" to "audio/wav",
+            "oga" to "audio/ogg",
+            "mp4" to "video/mp4",
+            "m4v" to "video/x-m4v",
+            "3gp" to "video/3gpp",
+            "mkv" to "video/x-matroska",
+            "webm" to "video/webm",
+            "mov" to "video/quicktime",
+        )
 
         fun flatAlbumId(treeUri: Uri): String = "${FLAT_PREFIX}${treeUri}"
 

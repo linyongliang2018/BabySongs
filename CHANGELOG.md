@@ -2,6 +2,12 @@
 
 本文件记录 **宝宝儿歌** 各版本相对上一版的用户可见变更。版本号与 `app/build.gradle.kts` 中 `versionName`、git tag `v*` 一致。
 
+## [Unreleased]
+
+### 变更
+
+- **支持更多本地格式**：扫描除 mp3/mp4 外，还纳入常见音频（m4a、aac、flac、ogg、opus、wav 等）与常见视频容器（m4v、3gp、mkv、webm、mov）；视频仅播放声音。已添加目录需「重新扫描」后才会出现新格式文件。
+
 ## [1.0.5] - 2026-04-11
 
 ### 新增

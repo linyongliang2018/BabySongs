@@ -17,14 +17,14 @@
     <string name="pick_library_folder_action">添加目录</string>
     <string name="how_to_add_dialog_title">如何选择儿歌目录</string>
     <string name="pick_library_folder_title">请先添加儿歌目录</string>
-    <string name="pick_library_folder_body">点击下方按钮，在系统界面里选中儿歌所在文件夹（例如「下载」Download、网盘同步目录等）。可多次添加，每个目录对应一张专辑；授权后应用只读取该目录及子文件夹。\n\n规则：每个已添加目录显示为一张专辑，该目录及子文件夹内的 mp3/mp4 均归入此专辑。</string>
+    <string name="pick_library_folder_body">点击下方按钮，在系统界面里选中儿歌所在文件夹（例如「下载」Download、网盘同步目录等）。可多次添加，每个目录对应一张专辑；授权后应用只读取该目录及子文件夹。\n\n规则：每个已添加目录显示为一张专辑，该目录及子文件夹内的常见音频及视频文件（仅播放声音）均归入此专辑。</string>
     <string name="pick_library_folder_primary">添加儿歌目录</string>
     <string name="root_not_picked">尚未添加</string>
     <string name="empty_albums_title">没有扫描到专辑</string>
-    <string name="empty_albums_hint">请确认所选目录内已有 mp3/mp4（可在子文件夹中）。添加文件后点「重新扫描」。</string>
+    <string name="empty_albums_hint">请确认所选目录内已有常见音频或视频文件（可在子文件夹中）。添加文件后点「重新扫描」。</string>
     <string name="rescan">重新扫描</string>
     <string name="got_it">知道了</string>
-    <string name="how_to_add_dialog_message">本应用不联网、不能在这里「上传」。请使用「添加目录」在系统文件界面中授权要扫描的文件夹（可添加多个）。\n\n规则：\n• 每个已添加目录对应一张专辑；\n• 该目录及子文件夹内的 mp3/mp4 会归入对应专辑。\n\n当前已添加：%1$s</string>
+    <string name="how_to_add_dialog_message">本应用不联网、不能在这里「上传」。请使用「添加目录」在系统文件界面中授权要扫描的文件夹（可添加多个）。\n\n规则：\n• 每个已添加目录对应一张专辑；\n• 该目录及子文件夹内的常见音频及视频文件（仅播放声音）会归入对应专辑。\n\n当前已添加：%1$s</string>
     <string name="roots_summary_label">已添加 %1$d 个目录</string>
     <string name="remove_root">移除</string>
     <string name="drawer_title">媒体库</string>
